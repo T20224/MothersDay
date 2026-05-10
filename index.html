@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>母亲节快乐 🌸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #fef9f2;
+            background-image: radial-gradient(circle at 30% 40%, rgba(220, 180, 140, 0.06) 0%, transparent 40%),
+                              radial-gradient(circle at 70% 80%, rgba(200, 160, 120, 0.05) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: "Ma Shan Zheng", "KaiTi", "华文楷体", "楷体", cursive, serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ---------- 飘落花瓣 ---------- */
+        .petals {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            top: -10%;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            will-change: transform;
+        }
+        @keyframes fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(0.8);
+                opacity: 0.85;
+            }
+            25% {
+                transform: translate(25px, 25vh) rotate(90deg) scale(1);
+                opacity: 0.65;
+            }
+            50% {
+                transform: translate(-20px, 50vh) rotate(180deg) scale(1.1);
+                opacity: 0.45;
+            }
+            75% {
+                transform: translate(20px, 75vh) rotate(270deg) scale(0.9);
+                opacity: 0.25;
+            }
+            100% {
+                transform: translate(-10px, 110vh) rotate(360deg) scale(0.4);
+                opacity: 0;
+            }
+        }
+
+        /* ---------- 封面层 ---------- */
+        .cover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fef9f2;
+            background-image: radial-gradient(circle at 30% 40%, rgba(220, 180, 140, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 70% 80%, rgba(200, 160, 120, 0.06) 0%, transparent 40%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            transition: opacity 0.6s ease;
+            opacity: 1;
+        }
+        .cover.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .cover-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: gentleBounce 2s infinite ease-in-out;
+        }
+        @keyframes gentleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .cover-title {
+            font-size: 1.8rem;
+            color: #b05a4a;
+            letter-spacing: 2px;
+            margin-bottom: 36px;
+            font-weight: 400;
+            text-shadow: 1px 1px 0 rgba(255,255,240,0.9);
+        }
+        .open-btn {
+            background: rgba(255, 252, 245, 0.8);
+            border: 1px solid #e6c9a8;
+            color: #8b6e5c;
+            padding: 12px 36px;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            font-family: "Ma Shan Zheng", "KaiTi", cursive, serif;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(160, 120, 70, 0.1);
+            background: #fffef5;
+        }
+        .open-btn:active {
+            transform: scale(0.96);
+            background: #f9eedb;
+            border-color: #b39276;
+        }
+
+        /* ---------- 便签卡片（初始隐藏） ---------- */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .main-content.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .note {
+            max-width: 420px;
+            width: 100%;
+            background: #fffef5;
+            border-radius: 8px 24px 8px 24px;
+            padding: 40px 28px 36px;
+            box-shadow: 0 8px 20px rgba(130, 100, 60, 0.08), 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #efe0c6;
+            text-align: center;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 34px,
+                #e5d7ba 34px,
+                #e5d7ba 35px
+            );
+            background-size: 100% 35px;
+            background-position: 0 1.5em;
+        }
+        .corner {
+            position: absolute;
+            top: 8px;
+            right: 16px;
+            font-size: 24px;
+            opacity: 0.5;
+            transform: rotate(8deg);
+        }
+        .greeting {
+            font-size: 2.6rem;
+            color: #b05a4a;
+            font-weight: 400;
+            letter-spacing: 3px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            transform: rotate(-0.5deg);
+            word-break: break-word;
+            text-shadow: 1px 1px 0 rgba(255,255,240,0.9);
+        }
+        .from {
+            margin-top: 24px;
+            font-size: 1.3rem;
+            color: #876952;
+            text-align: right;
+            padding-right: 12px;
+            transform: rotate(-0.3deg);
+            letter-spacing: 2px;
+        }
+
+        /* ---------- 音乐按钮 ---------- */
+        .music-btn {
+            margin-top: 24px;
+            background: rgba(255, 250, 240, 0.8);
+            border: 1px dashed #c9aa8b;
+            color: #8b6e5c;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-family: "Ma Shan Zheng", "KaiTi", cursive, serif;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(180, 130, 80, 0.05);
+        }
+        .music-btn:active {
+            background: #f9eedb;
+            border-color: #b39276;
+            color: #5e3e2b;
+        }
+        .hint {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: #bea48b;
+            text-align: center;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        @media (max-width: 420px) {
+            .greeting {
+                font-size: 2rem;
+            }
+            .from {
+                font-size: 1.1rem;
+            }
+            .cover-title {
+                font-size: 1.4rem;
+            }
+            .open-btn {
+                font-size: 1rem;
+                padding: 10px 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 飘落花瓣容器（一直存在，封面时就在飘） -->
+    <div class="petals" id="petalsContainer"></div>
+
+    <!-- 封面 -->
+    <div class="cover" id="coverLayer">
+        <div class="cover-icon">🎁</div>
+        <div class="cover-title"></div>
+        <button class="open-btn" id="openButton">拆开看看</button>
+    </div>
+
+    <!-- 主内容区（祝福卡片 + 音乐按钮） -->
+    <div class="main-content" id="mainContent">
+        <div class="note">
+            <div class="corner">🌸</div>
+            <div class="greeting" id="greetingText">加载中…</div>
+            <div class="from" id="fromText"></div>
+        </div>
+        <button class="music-btn" id="musicButton">🎵 点播一首旋律</button>
+        <div class="hint" id="urlHint"></div>
+    </div>
+
+    <script>
+        (function() {
+            // ========== 1. 读取 URL 参数，设置称呼和署名 ==========
+            const params = new URLSearchParams(window.location.search);
+            let to = params.get('to') || '妈妈';
+            let from = params.get('from') || '陈弘毅';
+
+            document.getElementById('greetingText').textContent = to + '，母亲节快乐！';
+            document.getElementById('fromText').textContent = '—— ' + from;
+
+            if (!params.get('to') && !params.get('from')) {
+
+                document.getElementById('urlHint').textContent = '✨ 今天您是全世界最幸福的妈妈 ✨';
+            }
+
+            // ========== 2. 封面点击交互 ==========
+            const coverLayer = document.getElementById('coverLayer');
+            const mainContent = document.getElementById('mainContent');
+            const openButton = document.getElementById('openButton');
+
+            openButton.addEventListener('click', function() {
+                // 隐藏封面
+                coverLayer.classList.add('hidden');
+                // 显示主内容
+                mainContent.classList.add('show');
+                // 如果还没生成花瓣，此处也可以再确保一下花瓣已经在飘（其实早就开始了）
+            });
+
+            // ========== 3. 生成飘落花瓣（一开始就飘） ==========
+            const petalsContainer = document.getElementById('petalsContainer');
+            const petalEmojis = ['🌸', '🌺', '💮', '🌷', '✿', '❤️', '✨'];
+            const petalCount = 24;
+
+            function createPetal() {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                const emoji = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+                petal.textContent = emoji;
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.fontSize = (Math.random() * 20 + 18) + 'px';
+                petal.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                petal.style.animationDelay = Math.random() * 6 + 's';
+                petal.style.opacity = Math.random() * 0.4 + 0.5;
+                petalsContainer.appendChild(petal);
+
+                petal.addEventListener('animationend', function() {
+                    petal.remove();
+                    createPetal();
+                });
+            }
+
+            for (let i = 0; i < petalCount; i++) {
+                setTimeout(() => createPetal(), i * 180);
+            }
+
+            // ========== 4. 音乐播放（轻旋律八音盒） ==========
+            const musicBtn = document.getElementById('musicButton');
+            let isPlaying = false;
+            let audioCtx = null;
+            let oscillator = null;
+            let gainNode = null;
+
+            function stopMusic() {
+                if (oscillator) {
+                    try { oscillator.stop(); } catch (e) {}
+                    oscillator.disconnect();
+                    oscillator = null;
+                }
+                if (gainNode) {
+                    gainNode.disconnect();
+                    gainNode = null;
+                }
+                if (audioCtx && audioCtx.state !== 'closed') {
+                    audioCtx.close().catch(() => {});
+                    audioCtx = null;
+                }
+                isPlaying = false;
+                musicBtn.textContent = '🎵 点播一首旋律';
+            }
+
+            function playMusic() {
+                if (isPlaying) {
+                    stopMusic();
+                    return;
+                }
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    gainNode = audioCtx.createGain();
+                    gainNode.gain.value = 0.1;
+                    gainNode.connect(audioCtx.destination);
+
+                    oscillator = audioCtx.createOscillator();
+                    oscillator.type = 'sine';
+                    
+                    const notes = [
+                        523.25, 587.33, 659.25, 698.46, 659.25, 587.33, 523.25,
+                        440.00, 493.88, 523.25, 587.33, 523.25, 493.88, 440.00,
+                        392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 698.46,
+                        659.25, 587.33, 523.25, 493.88, 440.00, 392.00, 349.23
+                    ];
+                    const noteDuration = 0.38;
+                    let currentTime = audioCtx.currentTime;
+
+                    notes.forEach((freq, index) => {
+                        const noteStart = currentTime + index * noteDuration;
+                        oscillator.frequency.setValueAtTime(freq, noteStart);
+                        gainNode.gain.setValueAtTime(0.001, noteStart);
+                        gainNode.gain.linearRampToValueAtTime(0.1, noteStart + 0.04);
+                        gainNode.gain.setValueAtTime(0.1, noteStart + noteDuration - 0.07);
+                        gainNode.gain.linearRampToValueAtTime(0.001, noteStart + noteDuration);
+                    });
+
+                    oscillator.connect(gainNode);
+                    oscillator.start(0);
+                    const totalDuration = notes.length * noteDuration + 0.5;
+                    oscillator.stop(audioCtx.currentTime + totalDuration);
+
+                    oscillator.onended = function() {
+                        stopMusic();
+                    };
+
+                    isPlaying = true;
+                    musicBtn.textContent = '🎶 播放中…（点此停止）';
+                } catch (e) {
+                    alert('播放需要您点一下按钮～');
+                    stopMusic();
+                }
+            }
+
+            musicBtn.addEventListener('click', playMusic);
+
+            window.addEventListener('beforeunload', function() {
+                stopMusic();
+            });
+
+            // 如果音频上下文被挂起，尝试在触摸时恢复
+            document.body.addEventListener('touchstart', function() {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            }, { once: false });
+
+        })();
+    </script>
+</body>
+</html>
